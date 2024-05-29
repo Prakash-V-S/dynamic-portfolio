@@ -1,5 +1,5 @@
 //importing createContext to create context api and useState to create state variables
-import React, { createContext, useState} from "react";
+import React, { createContext, useState } from "react";
 import { format } from "date-fns"; //importing format to formatting the date
 import axios from "axios"; //importing axios to do CRUD with API
 import _ from "lodash"; //importing _ to create cloned values
@@ -7,11 +7,9 @@ import { useNavigate } from "react-router-dom"; //importing useNavigate for manu
 import { ToastContainer, toast, Bounce } from "react-toastify"; //importing react-toastify to show good UI pop-ups
 import "react-toastify/dist/ReactToastify.css"; //importing style for the toast
 
-
 export const dpContext = createContext(); //creating context api
 
 const Context_Api_Component = ({ children }) => {
-
   //giving style for the toast
   const toastStyle = {
     position: "top-right",
@@ -30,12 +28,15 @@ const Context_Api_Component = ({ children }) => {
   const notifyError = (message) => toast.error(message, toastStyle);
   const notifyInfo = (message) => toast.info(message, toastStyle);
   const notifyWarn = (message) => toast.warn(message, toastStyle);
-  
-  const backendUrl = import.meta.env.VITE_BACKEND_URL; //getting backendUrl from .env file
+
+  const backendUrl = "https://dynamic-portfolio-backend-k0sw.onrender.com"; //getting backendUrl from .env file
+  // const backendUrl = import.meta.env.VITE_BACKEND_URL; //getting backendUrl from .env file
   const navigate = useNavigate(); // Initialize navigate
 
   //declaring some necessary state variables
-  const [token, setToken] = useState(() => localStorage.getItem("portfolioToken") || "");
+  const [token, setToken] = useState(
+    () => localStorage.getItem("portfolioToken") || ""
+  );
   const [userData, setUserData] = useState({});
   const [temp, setTemp] = useState("");
   const [userPortfolioData, setUserPortfolioData] = useState({});
@@ -62,7 +63,7 @@ const Context_Api_Component = ({ children }) => {
     }
     return format(new Date(dateString), "MMMM yyyy");
   };
-  
+
   //fetching user data
   const fetchUserData = async (token) => {
     try {
@@ -121,7 +122,10 @@ const Context_Api_Component = ({ children }) => {
       navigate("/user/home");
     } catch (error) {
       // Log any errors that occur during the request
-      console.error("Failed to delete portfolio data:", error.response.data.error);
+      console.error(
+        "Failed to delete portfolio data:",
+        error.response.data.error
+      );
       notifyError(`Network Error : ${error.response.data.error}`);
       if (error.response.status === 401) {
         navigate("/login"); //unauthorized user navigate to login page
@@ -152,7 +156,10 @@ const Context_Api_Component = ({ children }) => {
         navigate("/user/portfolio");
       } catch (error) {
         // Log any errors that occur during the request
-        console.error("Failed to create portfolio data:", error.response.data.error);
+        console.error(
+          "Failed to create portfolio data:",
+          error.response.data.error
+        );
         notifyError(`Network Error : ${error.response.data.error}`);
         if (error.response.status === 401) {
           navigate("/login"); //unauthorized user navigate to login pag
@@ -176,7 +183,10 @@ const Context_Api_Component = ({ children }) => {
         navigate("/user/portfolio");
       } catch (error) {
         // Log any errors that occur during the request
-        console.error("Failed to update portfolio data:", error.response.data.error);
+        console.error(
+          "Failed to update portfolio data:",
+          error.response.data.error
+        );
         notifyError(`Network Error : ${error.response.data.error}`);
         if (error.response.status === 401) {
           navigate("/login"); //unauthorized user navigate to login pag
@@ -209,7 +219,7 @@ const Context_Api_Component = ({ children }) => {
         notifySuccess,
         notifyError,
         notifyInfo,
-        notifyWarn
+        notifyWarn,
       }}
     >
       {children}
